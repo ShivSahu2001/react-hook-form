@@ -7,6 +7,10 @@ type formValues = {
   username: string;
   email: string;
   channel: string;
+  social: {
+    twitter: string,
+    instagram: string,
+  }
 };
 
 const YoutubeForm = () => {
@@ -16,7 +20,11 @@ const YoutubeForm = () => {
     defaultValues: {
         username: "Raj",
         email: "",
-        channel: ""
+        channel: "",
+        social: {
+            twitter: "",
+            instagram: "",
+        }
     }
 
     // to set the default values from an api endpoint
@@ -99,6 +107,25 @@ const YoutubeForm = () => {
             })}
           />
           <p className="error">{errors.channel?.message}</p>
+        </div>
+
+
+        <div className="form-control">
+          <label htmlFor="twitter">Twitter</label>
+          <input
+            type="text"
+            id="twitter"
+            {...register("social.twitter")}
+          />
+        </div>
+
+        <div className="form-control">
+          <label htmlFor="instagram">Instagram</label>
+          <input
+            type="text"
+            id="instagram"
+            {...register("social.instagram")}
+          />
         </div>
 
         <button>Submit</button>
