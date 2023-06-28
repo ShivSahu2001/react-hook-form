@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
 // let renderCount = 0
@@ -8,10 +8,13 @@ type formValues = {
   email: string;
   channel: string;
   social: {
-    twitter: string,
-    instagram: string,
-  },
-  phoneNumber: string [],
+    twitter: string;
+    instagram: string;
+  };
+  phoneNumber: string[];
+  phNumbers: {
+    number: string;
+  }[];
 };
 
 const YoutubeForm = () => {
@@ -19,32 +22,38 @@ const YoutubeForm = () => {
   const form = useForm<formValues>({
     // default values
     defaultValues: {
-        username: "Raj",
-        email: "",
-        channel: "",
-        // nested objects
-        social: {
-            twitter: "",
-            instagram: "",
-        },
-        // array 
-        phoneNumber: ["", ""],
-    }
+      username: "Raj",
+      email: "",
+      channel: "",
+      // nested objects
+      social: {
+        twitter: "",
+        instagram: "",
+      },
+      // array
+      phoneNumber: ["", ""],
+      phNumbers: [{ number: "" }],
+    },
 
     // to set the default values from an api endpoint
-//    defaultValues: async() => {
-//     const response = await fetch("https://jsonplaceholder.typicode.com/users/1")
-//     const data = await response.json()
-//     return {
-//         username: "raj",
-//         email: data.email,
-//         channel: "",
-//     }
-//    }
+    //    defaultValues: async() => {
+    //     const response = await fetch("https://jsonplaceholder.typicode.com/users/1")
+    //     const data = await response.json()
+    //     return {
+    //         username: "raj",
+    //         email: data.email,
+    //         channel: "",
+    //     }
+    //    }
   });
   const { register, control, handleSubmit, formState } = form;
   const { errors } = formState;
   // renderCount++;
+
+  const { fields, append, remove } = useFieldArray({
+    name: "phNumbers",
+    control,
+  });
 
   const onSubmit = (data: formValues) => {
     console.log("Form Submitted", data);
@@ -81,17 +90,17 @@ const YoutubeForm = () => {
               },
               validate: {
                 notAdmin: (fieldValue) => {
-                return (
-                  fieldValue !== "admin@example.com" ||
-                  "Enter a different email address"
-                );
-              },
-              notBlackListed: (fieldValue) => {
-                return(
+                  return (
+                    fieldValue !== "admin@example.com" ||
+                    "Enter a different email address"
+                  );
+                },
+                notBlackListed: (fieldValue) => {
+                  return (
                     !fieldValue.endsWith("baddomain.com") ||
                     "This domain is not supported"
-                );
-              },
+                  );
+                },
               },
             })}
           />
@@ -113,17 +122,16 @@ const YoutubeForm = () => {
           <p className="error">{errors.channel?.message}</p>
         </div>
 
-
         <div className="form-control">
           <label htmlFor="twitter">Twitter</label>
           <input
             type="text"
             id="twitter"
             {...register("social.twitter", {
-                required: {
-                    value: true,
-                    message: "Twitter profile is required"
-                }
+              required: {
+                value: true,
+                message: "Twitter profile is required",
+              },
             })}
           />
           <p className="error">{errors.social?.twitter?.message}</p>
@@ -135,10 +143,10 @@ const YoutubeForm = () => {
             type="text"
             id="instagram"
             {...register("social.instagram", {
-                required: {
-                    value: true,
-                    message: "Instagram Profile is required"
-                }
+              required: {
+                value: true,
+                message: "Instagram Profile is required",
+              },
             })}
           />
           <p className="error">{errors.social?.instagram?.message}</p>
@@ -150,10 +158,10 @@ const YoutubeForm = () => {
             type="text"
             id="primary-phone"
             {...register("phoneNumber.0", {
-                required: {
-                    value: true,
-                    message: "Primary phone number is required"
-                }
+              required: {
+                value: true,
+                message: "Primary phone number is required",
+              },
             })}
           />
           <p className="error">{errors.phoneNumber?.[0]?.message}</p>
@@ -165,13 +173,35 @@ const YoutubeForm = () => {
             type="text"
             id="secondary-phone"
             {...register("phoneNumber.1", {
-                required: {
-                    value: true,
-                    message: "Secondary phone number is required"
-                }
+              required: {
+                value: true,
+                message: "Secondary phone number is required",
+              },
             })}
           />
           <p className="error">{errors.phoneNumber?.[1]?.message}</p>
+        </div>
+
+        <div>
+          <label htmlFor="">List of Phone Numbers</label>
+          <div>
+            {fields.map((field, index) => (
+              <div className="form-control" key={field.id}>
+                <input
+                  type="text"
+                  {...register(`phNumbers.${index}.number` as const)}
+                />
+                {index > 0 && (
+                  <button type="button" onClick={() => remove(index)}>
+                    Remove 
+                  </button>
+                )}
+              </div>
+            ))}
+            <button type="button" onClick={() => append({ number: "" })}>
+              Add phone number
+            </button>
+          </div>
         </div>
 
         <button>Submit</button>
