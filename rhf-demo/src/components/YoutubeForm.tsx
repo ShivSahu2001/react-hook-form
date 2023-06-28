@@ -11,7 +11,25 @@ type formValues = {
 
 const YoutubeForm = () => {
   // whenever we type in input type it will not re-render in every keystroke because of uncontrolled input behaviour but normal react form while typing every keystroke it will re-render
-  const form = useForm<formValues>();
+  const form = useForm<formValues>({
+    // default values
+    defaultValues: {
+        username: "Raj",
+        email: "",
+        channel: ""
+    }
+
+    // to set the default values from an api endpoint
+//    defaultValues: async() => {
+//     const response = await fetch("https://jsonplaceholder.typicode.com/users/1")
+//     const data = await response.json()
+//     return {
+//         username: "raj",
+//         email: data.email,
+//         channel: "",
+//     }
+//    }
+  });
   const { register, control, handleSubmit, formState } = form;
   const { errors } = formState;
   // renderCount++;
