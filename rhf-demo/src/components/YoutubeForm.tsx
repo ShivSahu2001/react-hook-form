@@ -1,5 +1,5 @@
 import { useForm, useFieldArray } from "react-hook-form";
-import {useEffect} from "react"
+import { useEffect } from "react";
 import { DevTool } from "@hookform/devtools";
 
 // let renderCount = 0
@@ -37,7 +37,7 @@ const YoutubeForm = () => {
       phoneNumber: ["", ""],
       phNumbers: [{ number: "" }],
       age: 0,
-      dob: new Date()
+      dob: new Date(),
     },
 
     // to set the default values from an api endpoint
@@ -51,7 +51,15 @@ const YoutubeForm = () => {
     //     }
     //    }
   });
-  const { register, control, handleSubmit, formState, watch, getValues } = form;
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState,
+    watch,
+    getValues,
+    setValue,
+  } = form;
   const { errors } = formState;
   // renderCount++;
 
@@ -64,23 +72,29 @@ const YoutubeForm = () => {
     console.log("Form Submitted", data);
   };
 
-//   getValues is a method for retrieving the form values when a specific action is performed such as clicking a button.
+  //   getValues is a method for retrieving the form values when a specific action is performed such as clicking a button.
   const handleGetValues = () => {
-    console.log("get values", getValues(["username", "channel"]))
+    console.log("get values", getValues(["username", "channel"]));
+  };
+
+  const handleSetValue = () => {
+    setValue("username", "", {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true
+    })
   }
-
   //   const watchUsername  = watch("username")
-//   const watchUsername  = watch(["username", "email"])
-//   const watchForm = watch()
+  //   const watchUsername  = watch(["username", "email"])
+  //   const watchForm = watch()
 
-//   useEffect(() => {
-//     const subscription =  watch((value) => {
-//         console.log(value);
-//     })
-  
-//     return () => subscription.unsubscribe()
-//   }, [watch]);
+  //   useEffect(() => {
+  //     const subscription =  watch((value) => {
+  //         console.log(value);
+  //     })
 
+  //     return () => subscription.unsubscribe()
+  //   }, [watch]);
 
   return (
     <div>
@@ -218,7 +232,7 @@ const YoutubeForm = () => {
                 />
                 {index > 0 && (
                   <button type="button" onClick={() => remove(index)}>
-                    Remove 
+                    Remove
                   </button>
                 )}
               </div>
@@ -229,13 +243,13 @@ const YoutubeForm = () => {
           </div>
         </div>
 
-         <div className="form-control">
+        <div className="form-control">
           <label htmlFor="age">Age</label>
           <input
             type="number"
             id="age"
             {...register("age", {
-                valueAsNumber: true,
+              valueAsNumber: true,
               required: {
                 value: true,
                 message: "Age is required",
@@ -251,7 +265,7 @@ const YoutubeForm = () => {
             type="date"
             id="dob"
             {...register("dob", {
-                valueAsDate: true,
+              valueAsDate: true,
               required: {
                 value: true,
                 message: "Date of Birth is required",
@@ -262,7 +276,12 @@ const YoutubeForm = () => {
         </div>
 
         <button>Submit</button>
-        <button type="button" onClick={handleGetValues}>Get Values</button>
+        <button type="button" onClick={handleGetValues}>
+          Get Values
+        </button>
+        <button type="button" onClick={handleSetValue}>
+          Set Value
+        </button>
       </form>
       <DevTool control={control} />
     </div>
