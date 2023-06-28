@@ -51,7 +51,7 @@ const YoutubeForm = () => {
     //     }
     //    }
   });
-  const { register, control, handleSubmit, formState, watch } = form;
+  const { register, control, handleSubmit, formState, watch, getValues } = form;
   const { errors } = formState;
   // renderCount++;
 
@@ -64,17 +64,22 @@ const YoutubeForm = () => {
     console.log("Form Submitted", data);
   };
 
+//   getValues is a method for retrieving the form values when a specific action is performed such as clicking a button.
+  const handleGetValues = () => {
+    console.log("get values", getValues(["username", "channel"]))
+  }
+
   //   const watchUsername  = watch("username")
 //   const watchUsername  = watch(["username", "email"])
 //   const watchForm = watch()
 
-  useEffect(() => {
-    const subscription =  watch((value) => {
-        console.log(value);
-    })
+//   useEffect(() => {
+//     const subscription =  watch((value) => {
+//         console.log(value);
+//     })
   
-    return () => subscription.unsubscribe()
-  }, [watch]);
+//     return () => subscription.unsubscribe()
+//   }, [watch]);
 
 
   return (
@@ -257,6 +262,7 @@ const YoutubeForm = () => {
         </div>
 
         <button>Submit</button>
+        <button type="button" onClick={handleGetValues}>Get Values</button>
       </form>
       <DevTool control={control} />
     </div>
