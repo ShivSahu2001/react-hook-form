@@ -64,7 +64,8 @@ const YoutubeForm = () => {
     watch,
     getValues,
     setValue,
-    reset
+    reset, 
+    trigger
   } = form;
   const { errors, touchedFields, dirtyFields, isDirty, isValid, isSubmitting, isSubmitted, isSubmitSuccessful, submitCount } = formState;
 
@@ -324,6 +325,9 @@ const YoutubeForm = () => {
         </button>
         <button type="button" onClick={handleSetValue}>
           Set Value
+        </button>
+        <button type="button" onClick={() => trigger("channel")}>
+          Validate 
         </button>
       </form>
       <DevTool control={control} />
