@@ -79,7 +79,7 @@ const YoutubeForm = () => {
 
   //   getValues is a method for retrieving the form values when a specific action is performed such as clicking a button.
   const handleGetValues = () => {
-    console.log("get values", getValues(["username", "channel"]));
+    // console.log("get values", getValues(["username", "channel"]));
   };
 
   const handleSetValue = () => {
@@ -172,11 +172,15 @@ const YoutubeForm = () => {
             type="text"
             id="twitter"
             {...register("social.twitter", {
+              // when a field is disabled the value of field is undefined and validation is also disabled.
+              // disabled: true,
+              disabled: watch("channel") === "",
               required: {
                 value: true,
                 message: "Twitter profile is required",
-              },
-            })}
+                
+              }, 
+            }, )}
           />
           <p className="error">{errors.social?.twitter?.message}</p>
         </div>
@@ -202,6 +206,7 @@ const YoutubeForm = () => {
             type="text"
             id="primary-phone"
             {...register("phoneNumber.0", {
+              
               required: {
                 value: true,
                 message: "Primary phone number is required",
