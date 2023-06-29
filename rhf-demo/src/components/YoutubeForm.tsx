@@ -39,6 +39,11 @@ const YoutubeForm = () => {
       age: 0,
       dob: new Date(),
     },
+    // onChange is not recommended way because it will re-render everytime and performance will degrade
+    // mode: "onChange"
+
+    // all -->  will validate for onBlur and also onChange 
+    mode: "all"
 
     // to set the default values from an api endpoint
     //    defaultValues: async() => {
@@ -309,8 +314,8 @@ const YoutubeForm = () => {
           <p className="error">{errors.dob?.message}</p>
         </div>
 
-            {/* || !isValid */}
-        <button  disabled={!isDirty  || isSubmitting}>Submit</button>
+            {/* || !isValid   disabled={!isDirty  || isSubmitting} */}
+        <button >Submit</button>
         <button type="button" onClick={() => reset()}>
           Reset
         </button>
