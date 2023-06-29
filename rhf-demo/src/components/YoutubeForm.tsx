@@ -60,13 +60,15 @@ const YoutubeForm = () => {
     getValues,
     setValue,
   } = form;
-  const { errors, touchedFields, dirtyFields, isDirty, isValid } = formState;
+  const { errors, touchedFields, dirtyFields, isDirty, isValid, isSubmitting, isSubmitted, isSubmitSuccessful, submitCount } = formState;
+
+  console.log({isSubmitting, isSubmitted, isSubmitSuccessful, submitCount})
 
   // renderCount++;
 
 //   touchfied means --> you have interacted with input or not
 // dirtyfield means --> you have modified an input field
-  console.log({touchedFields, dirtyFields, isDirty, isValid})
+  // console.log({touchedFields, dirtyFields, isDirty, isValid})
 
   const { fields, append, remove } = useFieldArray({
     name: "phNumbers",
@@ -292,7 +294,8 @@ const YoutubeForm = () => {
           <p className="error">{errors.dob?.message}</p>
         </div>
 
-        <button disabled={!isDirty || !isValid}>Submit</button>
+            {/* */}
+        <button  disabled={!isDirty || !isValid || isSubmitting}>Submit</button>
         <button type="button" onClick={handleGetValues}>
           Get Values
         </button>
