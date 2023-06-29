@@ -1,4 +1,4 @@
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, FieldErrors } from "react-hook-form";
 import { useEffect } from "react";
 import { DevTool } from "@hookform/devtools";
 
@@ -77,6 +77,11 @@ const YoutubeForm = () => {
     console.log("Form Submitted", data);
   };
 
+  // handle Submission error
+  const onError = (errors: FieldErrors<formValues>) => {
+    console.log("Form Errors", errors)
+  }
+
   //   getValues is a method for retrieving the form values when a specific action is performed such as clicking a button.
   const handleGetValues = () => {
     // console.log("get values", getValues(["username", "channel"]));
@@ -106,7 +111,7 @@ const YoutubeForm = () => {
       {/* <h1>Youtube Form {renderCount/2}</h1> */}
       {/* <h2>Watched Value: {watchUsername}</h2> */}
       {/* <h2>Watched value: {JSON.stringify(watchForm)}</h2> */}
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
         <div className="form-control">
           <label htmlFor="username">Username</label>
           <input
@@ -174,6 +179,8 @@ const YoutubeForm = () => {
             {...register("social.twitter", {
               // when a field is disabled the value of field is undefined and validation is also disabled.
               // disabled: true,
+
+              // conditionally disabling fields 
               disabled: watch("channel") === "",
               required: {
                 value: true,
